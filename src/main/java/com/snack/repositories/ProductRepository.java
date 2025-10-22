@@ -3,18 +3,20 @@ package com.snack.repositories;
 import com.snack.entities.Product;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ProductRepository {
-    private List<Product> products = new ArrayList<Product>();
+    private List<Product> products = new ArrayList<>();
 
     public List<Product> getAll() {
         return products;
     }
 
     public Product getById(int id) {
-        return products.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
+        return products.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     public boolean exists(int id) {
@@ -29,7 +31,7 @@ public class ProductRepository {
         products.removeIf(product -> product.getId() == id);
     }
 
-    public void update(int id, Product product) {
+    public void update(int id, Product product) throws Exception {
         Product productInDb = products.stream()
                 .filter(p -> p.getId() == id)
                 .findFirst()
@@ -39,6 +41,8 @@ public class ProductRepository {
             productInDb.setDescription(product.getDescription());
             productInDb.setPrice(product.getPrice());
             productInDb.setImage(product.getImage());
+        } else {
+            throw new Exception("Produto com ID " + id + " não encontrado para atualização.");
         }
     }
 }

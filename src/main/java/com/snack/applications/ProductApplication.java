@@ -38,8 +38,12 @@ public class ProductApplication {
     }
 
     public void update(int id, Product product) {
-        this.productRepository.update(id, product);
-        this.productService.update(product);
+        try {
+            this.productRepository.update(id, product);
+            this.productService.update(product);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar o produto: " + e.getMessage(), e);
+        }
     }
 
     public float sellProduct(int id, int quantity) {
